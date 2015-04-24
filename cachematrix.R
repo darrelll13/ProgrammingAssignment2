@@ -1,15 +1,46 @@
-## Put comments here that give an overall description of what your
-## functions do
-
-## Write a short comment describing this function
 
 makeCacheMatrix <- function(x = matrix()) {
+        # creates a placeholder
+        xinv <- NULL 
 
+        # use `<<-` to assign a value to an object in an environment 
+        # different from the current environment. 
+        set <- function(y) {
+                x <<- y
+                # creates placeholder for inverted matrix
+                xinv <<- NULL 
+        }
+        # return the input matrix
+        get <- function() x 
+        # set the inversed matrix
+        setInv <- function(inv) xinv <<- inv 
+        # return the inversed matrix
+        getInv <- function() xinv 
+        # return a list that contains these functions
+        list(set = set, get = get,
+             setInv = setInv,
+             getInv = getInv)
 }
-
-
-## Write a short comment describing this function
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+        m <- x$getInv() # get the inversed matrix from object x
+        # it will be null if uncalculated, remember the first line "xinv <- NULL" in the previous function
+        if(!is.null(m)) { # if the inversion result is there
+                message("getting cached data")
+                return(m) # return the calculated inversion
+        }
+        data <- x$get() # if not, we do x$get to get the matrix object
+        #calculate matrix
+        m <- solve(data)
+        x$setInv(m)
+        return(m)
 }
+
+# Test
+# generate a random square, non-singular matrix - not integers
+test <- matrix(runif(9,5,100),3,3)
+# test the makeCacheMatrix object with this matrix
+testCached <- makeCacheMatrix(test)
+# from now on calculate or retrieve calculated inversion using the cacheSolve function
+testInv <- cacheSolve(testCached)
+
