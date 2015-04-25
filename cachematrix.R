@@ -1,4 +1,6 @@
 # Hash ee4ebbe08ed821ca82f056719f2ab509e8e36e18
+
+# Creates matrix inverse and stores it in a casche
 makeCacheMatrix <- function(x = matrix()) {
         # creates a placeholder
         xinv <- NULL 
@@ -22,6 +24,7 @@ makeCacheMatrix <- function(x = matrix()) {
              getInv = getInv)
 }
 
+# retrieves a cashedmatrix or creates one if missing.
 cacheSolve <- function(x, ...) {
         m <- x$getInv() # get the inversed matrix from object x
         # it will be null if uncalculated, remember the first line "xinv <- NULL" in the previous function
